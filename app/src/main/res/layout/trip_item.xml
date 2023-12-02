@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:minHeight="100dp"
+    app:cardCornerRadius="20dp"
+    android:elevation="8dp"
+    app:cardElevation="8dp"
+    android:layout_margin="10dp"
+    >
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:padding="10dp">
+
+   <ImageView
+       android:layout_weight="3"
+       android:layout_width="0dp"
+       android:layout_height="match_parent"
+       android:src="@drawable/icon"
+       />
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:layout_weight="5"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trip name"
+            android:textSize="24sp"
+            android:textColor="@color/darkGreen"
+            android:textStyle="bold"
+            android:maxLines="1"
+            />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rating="3.5"
+            android:numStars="5"
+            android:scaleY="0.5"
+            android:scaleX="0.5"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>
