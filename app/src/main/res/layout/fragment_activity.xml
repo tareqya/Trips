@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home.ActivityFragment">
+
+  <TextView
+      android:id="@+id/fActivity_TV_title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="My Trips Activities"
+      android:textStyle="bold"
+      android:padding="10dp"
+      android:textSize="24sp"
+      />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fActivity_RV_trips"
+        android:layout_below="@id/fActivity_TV_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+
+</RelativeLayout>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home.QuizActivity">
+
+    <TextView
+        android:id="@+id/quiz_TV_questionNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="Question 1"
+        android:padding="10dp"
+        android:textSize="24sp"
+        />
+
+    <TextView
+        android:id="@+id/quiz_TV_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_below="@id/quiz_TV_questionNumber"
+        android:text="The question body ?"
+        android:padding="10dp"
+
+        />
+
+    <RadioGroup
+        android:id="@+id/quiz_RG_options"
+        android:layout_below="@id/quiz_TV_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="option 1"
+            android:id="@+id/option1"
+
+            />
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="option 2"
+            android:id="@+id/option2"
+            />
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="option 3"
+            android:id="@+id/option3"
+            />
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="50dp">
+
+        <Button
+            style="?attr/materialIconButtonFilledStyle"
+            android:id="@+id/quiz_BTN_prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/baseline_arrow_back_ios_24"
+            />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <Button
+            style="?attr/materialIconButtonFilledStyle"
+            android:id="@+id/quiz_BTN_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/baseline_arrow_forward_ios_24"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

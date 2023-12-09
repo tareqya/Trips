@@ -13,6 +13,12 @@
         android:theme="@style/Theme.Trip"
         tools:targetApi="31">
         <activity
+            android:name=".home.QuizActivity"
+            android:exported="false" />
+        <activity
+            android:name=".home.TripActivity"
+            android:exported="false" />
+        <activity
             android:name=".home.HomeActivity"
             android:exported="false" />
         <activity
