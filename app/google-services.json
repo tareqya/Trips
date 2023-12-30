@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "835275668964",
+    "firebase_url": "https://trip-5edb5-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "trip-5edb5",
+    "storage_bucket": "trip-5edb5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835275668964:android:3d3671752425b3124e9bf1",
+        "android_client_info": {
+          "package_name": "com.example.trip"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJGPppmVHcrc11hIGtxyey0o_95_v17J0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
