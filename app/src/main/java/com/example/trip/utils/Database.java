@@ -1,5 +1,7 @@
 package com.example.trip.utils;
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 
 import com.example.trip.callback.UserCallBack;
@@ -9,17 +11,23 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 public class Database {
     public static final String USERS_TABLE = "Users";
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
+    private FirebaseStorage storage;
     private UserCallBack userCallBack;
 
     public Database(){
         this.mAuth = FirebaseAuth.getInstance();
         this.mDatabase = FirebaseDatabase.getInstance();
+        this.storage = FirebaseStorage.getInstance();
     }
 
     public void setUserCallBack(UserCallBack userCallBack){
@@ -52,6 +60,25 @@ public class Database {
                 });
     }
 
+    public void fetchUserData(String uid){
+        this.mDatabase.getReference().child(USERS_TABLE).child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if(user.getImagePath() != null){
+                    String imageUrl = downloadImageUrl(user.getImagePath());
+                    user.setImageUrl(imageUrl);
+                }
+                userCallBack.onFetchUserComplete(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public FirebaseUser getCurrentUser(){
         return this.mAuth.getCurrentUser();
     }
@@ -70,4 +97,11 @@ public class Database {
             }
         });
     }
+
+    public String downloadImageUrl(String imagePath){
+        Task<Uri> downloadImageTask = storage.getReference().child(imagePath).getDownloadUrl();
+        while (!downloadImageTask.isComplete() && !downloadImageTask.isCanceled());
+        return downloadImageTask.getResult().toString();
+    }
+
 }

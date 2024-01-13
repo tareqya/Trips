@@ -63,6 +63,11 @@ public class SignupActivity extends AppCompatActivity {
             public void onLoginComplete(Task<AuthResult> task) {
 
             }
+
+            @Override
+            public void onFetchUserComplete(User user) {
+
+            }
         });
 
         signup_BTN_createAccount.setOnClickListener(new View.OnClickListener() {

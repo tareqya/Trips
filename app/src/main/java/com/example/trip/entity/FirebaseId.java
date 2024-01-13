@@ -2,7 +2,9 @@ package com.example.trip.entity;
 
 import com.google.firebase.database.Exclude;
 
-public class FirebaseId {
+import java.io.Serializable;
+
+public class FirebaseId implements Serializable {
     protected String uid;
 
     public FirebaseId() {}

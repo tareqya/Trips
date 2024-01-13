@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.trip.R;
 import com.example.trip.callback.UserCallBack;
+import com.example.trip.entity.User;
 import com.example.trip.home.HomeActivity;
 import com.example.trip.utils.Database;
 import com.google.android.gms.tasks.Task;
@@ -54,6 +55,11 @@ public class LoginActivity extends AppCompatActivity {
                     String err = task.getException().getMessage().toString();
                     Toast.makeText(LoginActivity.this, err, Toast.LENGTH_SHORT).show();
                 }
+            }
+
+            @Override
+            public void onFetchUserComplete(User user) {
+
             }
         });
         login_BTN_login.setOnClickListener(new View.OnClickListener() {
