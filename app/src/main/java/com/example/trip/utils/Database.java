@@ -1,11 +1,14 @@
 package com.example.trip.utils;
 
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.trip.callback.TripCallBack;
 import com.example.trip.callback.UserCallBack;
+import com.example.trip.entity.Trip;
 import com.example.trip.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -16,14 +19,19 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.ArrayList;
 
 public class Database {
     public static final String USERS_TABLE = "Users";
+    public static final String TRIPS_TABLE = "Trips";
     private FirebaseAuth mAuth;
     private FirebaseFirestore mDatabase;
     private FirebaseStorage storage;
     private UserCallBack userCallBack;
+    private TripCallBack tripCallBack;
 
     public Database(){
         this.mAuth = FirebaseAuth.getInstance();
@@ -33,6 +41,10 @@ public class Database {
 
     public void setUserCallBack(UserCallBack userCallBack){
         this.userCallBack = userCallBack;
+    }
+
+    public void setTripCallBack(TripCallBack tripCallBack){
+        this.tripCallBack = tripCallBack;
     }
 
     public void createAccount(User user){
@@ -98,6 +110,28 @@ public class Database {
         Task<Uri> downloadImageTask = storage.getReference().child(imagePath).getDownloadUrl();
         while (!downloadImageTask.isComplete() && !downloadImageTask.isCanceled());
         return downloadImageTask.getResult().toString();
+    }
+
+
+    public void fetchTrips(){
+        this.mDatabase.collection(TRIPS_TABLE).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                ArrayList<Trip> trips = new ArrayList<>();
+                for(DocumentSnapshot snapshot: value.getDocuments()){
+                    Trip trip = snapshot.toObject(Trip.class);
+                    trip.setUid(snapshot.getId());
+                    Log.d("TAREQ", snapshot.getId());
+                    if(trip.getImagePath() != null){
+                        String imageUrl = downloadImageUrl(trip.getImagePath());
+                        trip.setImageUrl(imageUrl);
+                    }
+                    trips.add(trip);
+                }
+
+                tripCallBack.onTripsFetchComplete(trips);
+            }
+        });
     }
 
 }
