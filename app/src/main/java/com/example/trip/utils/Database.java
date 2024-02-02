@@ -8,10 +8,13 @@ import androidx.annotation.Nullable;
 
 import com.example.trip.callback.TripCallBack;
 import com.example.trip.callback.UserCallBack;
+import com.example.trip.entity.BookedTrip;
 import com.example.trip.entity.Trip;
 import com.example.trip.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,11 +25,14 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Database {
     public static final String USERS_TABLE = "Users";
     public static final String TRIPS_TABLE = "Trips";
+    public static final String USER_TRIPS_TABLE = "Trips";
     private FirebaseAuth mAuth;
     private FirebaseFirestore mDatabase;
     private FirebaseStorage storage;
@@ -132,6 +138,33 @@ public class Database {
                 tripCallBack.onTripsFetchComplete(trips);
             }
         });
+    }
+
+    public void bookTrip(String uid, BookedTrip trip){
+
+        this.mDatabase.collection(USERS_TABLE)
+                .document(uid).collection(USER_TRIPS_TABLE).document(trip.getUid())
+                .set(trip)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        tripCallBack.onBookTripComplete(task);
+                    }
+                });
+    }
+
+    public void fetchTripByDate(String uid, Date date){
+        this.mDatabase.collection(USERS_TABLE).document(uid)
+                .collection(USER_TRIPS_TABLE).whereEqualTo("tripDate", date)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                            for(DocumentSnapshot snapshot: value.getDocuments()){
+
+                             }
+                    }
+                });
     }
 
 }

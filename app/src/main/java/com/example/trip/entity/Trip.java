@@ -2,15 +2,17 @@ package com.example.trip.entity;
 
 import com.google.firebase.firestore.Exclude;
 
-public class Trip extends FirebaseId {
-    private String title;
-    private String description;
-    private String imagePath;
-    private String imageUrl;
-    private String unit ;
-    private int length;
-    private String tripType;
-    private float rate;
+import java.io.Serializable;
+
+public class Trip extends FirebaseId implements Serializable {
+    protected String title;
+    protected String description;
+    protected String imagePath;
+    protected String imageUrl;
+    protected String unit ;
+    protected int length;
+    protected String tripType;
+    protected float rate;
 
     public Trip() {
     }
@@ -85,5 +87,10 @@ public class Trip extends FirebaseId {
     public Trip setRate(float rate){
         this.rate = rate;
         return this;
+    }
+
+    @Override
+    public String toString(){
+        return this.length + " " + this.unit;
     }
 }

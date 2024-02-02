@@ -1,6 +1,7 @@
 package com.example.trip.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,8 +19,10 @@ import android.widget.Spinner;
 import com.example.trip.R;
 import com.example.trip.adapter.TripAdapter;
 import com.example.trip.callback.TripCallBack;
+import com.example.trip.callback.TripListener;
 import com.example.trip.entity.Trip;
 import com.example.trip.utils.Database;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
@@ -65,6 +68,11 @@ public class HomeFragment extends Fragment {
                 fHome_RV_trips.setItemAnimator(new DefaultItemAnimator());
                 fHome_RV_trips.setAdapter(tripAdapter);
             }
+
+            @Override
+            public void onBookTripComplete(Task<Void> task) {
+
+            }
         });
         database.fetchTrips();
         fHome_SP_tripType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -94,6 +102,14 @@ public class HomeFragment extends Fragment {
         }
 
         TripAdapter tripAdapter = new TripAdapter(context, trips);
+        tripAdapter.setTripListener(new TripListener() {
+            @Override
+            public void onClick(Trip trip) {
+                Intent intent = new Intent(context, TripActivity.class);
+                intent.putExtra("SELECTED_TRIP", trip);
+                startActivity(intent);
+            }
+        });
         fHome_RV_trips.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         fHome_RV_trips.setHasFixedSize(true);
         fHome_RV_trips.setItemAnimator(new DefaultItemAnimator());

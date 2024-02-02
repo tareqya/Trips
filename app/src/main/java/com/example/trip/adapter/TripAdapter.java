@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.trip.R;
+import com.example.trip.callback.TripListener;
 import com.example.trip.entity.Trip;
 
 import java.util.ArrayList;
@@ -20,10 +21,15 @@ import java.util.ArrayList;
 public class TripAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<Trip> trips;
     private Context context;
+    private TripListener tripListener;
 
     public TripAdapter(Context context, ArrayList<Trip> trips){
         this.context = context;
         this.trips = trips;
+    }
+
+    public void setTripListener(TripListener tripListener){
+        this.tripListener = tripListener;
     }
 
     @NonNull
@@ -67,7 +73,11 @@ public class TripAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    int pos = getAdapterPosition();
+                    Trip trip = getItem(pos);
+                    if(tripListener != null){
+                        tripListener.onClick(trip);
+                    }
                 }
             });
         }
