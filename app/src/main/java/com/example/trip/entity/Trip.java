@@ -43,7 +43,7 @@ public class Trip extends FirebaseId implements Serializable {
         this.imagePath = imagePath;
         return this;
     }
-
+    @Exclude
     public String getImageUrl() {
         return imageUrl;
     }

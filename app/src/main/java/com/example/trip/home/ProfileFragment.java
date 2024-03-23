@@ -1,5 +1,6 @@
 package com.example.trip.home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +15,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.trip.R;
+import com.example.trip.auth.LoginActivity;
 import com.example.trip.entity.User;
+import com.example.trip.utils.Database;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -22,6 +25,7 @@ public class ProfileFragment extends Fragment {
     public static final String CURRENT_USER = "CURRENT_USER";
     private User currentUser;
     private Context context;
+    private Database database;
 
     private CircleImageView profile_image;
     private TextView profile_TV_name;
@@ -45,6 +49,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void initVars() {
+        database = new Database();
         profile_CV_editDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,7 +62,10 @@ public class ProfileFragment extends Fragment {
         profile_CV_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                database.logout();
+                Intent intent = new Intent((Activity)context, LoginActivity.class);
+                startActivity(intent);
+                ((Activity) context).finish();
             }
         });
     }

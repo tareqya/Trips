@@ -9,7 +9,7 @@
       android:id="@+id/fActivity_TV_title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="My Trips Activities"
+      android:text="Today Trips Activities"
       android:textStyle="bold"
       android:padding="10dp"
       android:textSize="24sp"

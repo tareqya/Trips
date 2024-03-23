@@ -14,20 +14,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.trip.R;
 import com.example.trip.callback.TripListener;
+import com.example.trip.entity.BookedTrip;
 import com.example.trip.entity.Trip;
 
 import java.util.ArrayList;
 
-public class TripAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private ArrayList<Trip> trips;
+public class TripAdapter <T extends Trip>  extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private ArrayList<T> trips;
     private Context context;
     private TripListener tripListener;
 
-    public TripAdapter(Context context, ArrayList<Trip> trips){
+    public TripAdapter(Context context, ArrayList<T> trips){
         this.context = context;
         this.trips = trips;
     }
-
     public void setTripListener(TripListener tripListener){
         this.tripListener = tripListener;
     }

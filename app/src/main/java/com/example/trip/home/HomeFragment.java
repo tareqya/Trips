@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onTripsFetchComplete(ArrayList<Trip> trips) {
                 allTrips = trips;
-                TripAdapter tripAdapter = new TripAdapter(context, trips);
+                TripAdapter<Trip> tripAdapter = new TripAdapter<>(context, trips);
                 fHome_RV_trips.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
                 fHome_RV_trips.setHasFixedSize(true);
                 fHome_RV_trips.setItemAnimator(new DefaultItemAnimator());
@@ -101,7 +101,7 @@ public class HomeFragment extends Fragment {
             trips = allTrips;
         }
 
-        TripAdapter tripAdapter = new TripAdapter(context, trips);
+        TripAdapter<Trip> tripAdapter = new TripAdapter<>(context, trips);
         tripAdapter.setTripListener(new TripListener() {
             @Override
             public void onClick(Trip trip) {

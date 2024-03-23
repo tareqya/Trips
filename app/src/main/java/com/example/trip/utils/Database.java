@@ -6,9 +6,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.trip.callback.ActivityCallBack;
 import com.example.trip.callback.TripCallBack;
 import com.example.trip.callback.UserCallBack;
 import com.example.trip.entity.BookedTrip;
+import com.example.trip.entity.Question;
 import com.example.trip.entity.Trip;
 import com.example.trip.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +40,7 @@ public class Database {
     private FirebaseStorage storage;
     private UserCallBack userCallBack;
     private TripCallBack tripCallBack;
+    private ActivityCallBack activityCallBack;
 
     public Database(){
         this.mAuth = FirebaseAuth.getInstance();
@@ -45,6 +48,9 @@ public class Database {
         this.storage = FirebaseStorage.getInstance();
     }
 
+    public void setActivityCallBack(ActivityCallBack activityCallBack){
+        this.activityCallBack = activityCallBack;
+    }
     public void setUserCallBack(UserCallBack userCallBack){
         this.userCallBack = userCallBack;
     }
@@ -83,12 +89,17 @@ public class Database {
         this.mDatabase.collection(USERS_TABLE).document(uid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                User user = value.toObject(User.class);
-                if(user.getImagePath() != null){
-                    String imageUrl = downloadImageUrl(user.getImagePath());
-                    user.setImageUrl(imageUrl);
+                try{
+                    User user = value.toObject(User.class);
+                    if(user.getImagePath() != null){
+                        String imageUrl = downloadImageUrl(user.getImagePath());
+                        user.setImageUrl(imageUrl);
+                    }
+                    userCallBack.onFetchUserComplete(user);
+                }catch (Exception e){
+
                 }
-                userCallBack.onFetchUserComplete(user);
+
             }
         });
     }
@@ -123,19 +134,24 @@ public class Database {
         this.mDatabase.collection(TRIPS_TABLE).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                ArrayList<Trip> trips = new ArrayList<>();
-                for(DocumentSnapshot snapshot: value.getDocuments()){
-                    Trip trip = snapshot.toObject(Trip.class);
-                    trip.setUid(snapshot.getId());
-                    Log.d("TAREQ", snapshot.getId());
-                    if(trip.getImagePath() != null){
-                        String imageUrl = downloadImageUrl(trip.getImagePath());
-                        trip.setImageUrl(imageUrl);
+                try{
+                    ArrayList<Trip> trips = new ArrayList<>();
+                    for(DocumentSnapshot snapshot: value.getDocuments()){
+                        Trip trip = snapshot.toObject(Trip.class);
+                        trip.setUid(snapshot.getId());
+                        Log.d("TAREQ", snapshot.getId());
+                        if(trip.getImagePath() != null){
+                            String imageUrl = downloadImageUrl(trip.getImagePath());
+                            trip.setImageUrl(imageUrl);
+                        }
+                        trips.add(trip);
                     }
-                    trips.add(trip);
+
+                    tripCallBack.onTripsFetchComplete(trips);
+                }catch (Exception e){
+
                 }
 
-                tripCallBack.onTripsFetchComplete(trips);
             }
         });
     }
@@ -159,10 +175,44 @@ public class Database {
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
+                        try{
+                            ArrayList<BookedTrip> trips = new ArrayList<>();
                             for(DocumentSnapshot snapshot: value.getDocuments()){
+                                BookedTrip trip = snapshot.toObject(BookedTrip.class);
+                                if(trip.getImagePath() != null){
+                                    String imageUrl = downloadImageUrl(trip.getImagePath());
+                                    trip.setImageUrl(imageUrl);
+                                }
+                                trip.setUid(snapshot.getId());
+                                trips.add(trip);
+                            }
+                            activityCallBack.onActivitiesFetchComplete(trips);
+                        }catch (Exception e){
 
-                             }
+                        }
+
+                    }
+                });
+    }
+
+
+    public void fetchActivityQuestions(String activityId){
+        this.mDatabase.collection(TRIPS_TABLE).document(activityId).collection("exam")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        try{
+                            ArrayList<Question> questions = new ArrayList<>();
+                            for(DocumentSnapshot snapshot: value.getDocuments()){
+                                Question question = snapshot.toObject(Question.class);
+                                question.setId(snapshot.getId());
+                                questions.add(question);
+                            }
+                            activityCallBack.onActivityQuestionsFetchComplete(questions);
+                        }catch (Exception e){
+
+                        }
+
                     }
                 });
     }
